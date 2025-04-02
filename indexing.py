@@ -1,48 +1,50 @@
+from elasticsearch import Elasticsearch, helpers
 import json
-from elasticsearch import Elasticsearch, helpers, exceptions
 
-def upload_to_elasticsearch(file_path, index_name, es_host="http://localhost:9200"):
-    try:
-        # Connect to Elasticsearch
-        es = Elasticsearch(es_host)
-        if not es.ping():
-            raise ConnectionError("Connection to Elasticsearch failed.")
-        print("✅ Connected to Elasticsearch.")
+# Config
+ES_HOST = "https://localhost:9200"
+ES_USERNAME = "elastic"
+ES_PASSWORD = "PI2YFhUS4ycPWNw8VdcX"
+INDEX_NAME = "imageindex"
+JSON_FILE = "responses.json"
 
-        # Read JSON file
-        try:
-            with open(file_path, "r", encoding="utf-8") as file:
-                records = json.load(file)
-        except FileNotFoundError:
-            print(f"❌ File '{file_path}' not found.")
-            return
-        except json.JSONDecodeError as e:
-            print(f"❌ Invalid JSON format: {e}")
-            return
+# Connect
+es = Elasticsearch(
+    [ES_HOST],
+    basic_auth=(ES_USERNAME, ES_PASSWORD),
+    verify_certs=False
+)
 
-        # Prepare data
-        actions = [
-            {
-                "_index": index_name,
-                "_source": record
-            }
-            for record in records
-        ]
+if not es.ping():
+    raise ValueError("Connection failed")
+print("Connected to Elasticsearch!")
 
-        # Create index if not exists
-        if not es.indices.exists(index=index_name):
-            es.indices.create(index=index_name)
-            print(f"📁 Index '{index_name}' created.")
+# Ensure index exists
+if not es.indices.exists(index=INDEX_NAME):
+    es.indices.create(index=INDEX_NAME)
+    print(f"Created index '{INDEX_NAME}'")
 
-        # Bulk upload
-        helpers.bulk(es, actions)
-        print(f"✅ Uploaded {len(actions)} documents to '{index_name}' index.")
+# Load JSON data
+with open(JSON_FILE, "r") as f:
+    data = json.load(f)
 
-    except exceptions.ConnectionError as e:
-        print("❌ Connection error:", e)
-    except Exception as e:
-        print("❌ Unexpected error:", e)
+# Build actions
+actions = [
+    {
+        "_index": INDEX_NAME,
+        "_source": {
+            "image_path": doc["image_path"].replace("\\", "/"),
+            "response": doc["response"]
+        }
+    }
+    for doc in data
+]
 
-# Run the function
-if __name__ == "__main__":
-    upload_to_elasticsearch("your_file.json", "image_descriptions")
+# Bulk index with error handling
+try:
+    helpers.bulk(es, actions)
+    print(f"Indexed {len(actions)} documents into '{INDEX_NAME}' index.")
+except helpers.BulkIndexError as e:
+    print("❌ Bulk indexing failed:")
+    for err in e.errors:
+        print(err)
