@@ -2,6 +2,8 @@
 
 **memoryLens** is a project that leverages OpenAI's API and Elasticsearch to analyze and index image content for efficient searching and retrieval. The application processes images, generates descriptive responses using OpenAI's API, and stores the results in an Elasticsearch index.
 
+![alt text](image.png)
+
 ## Features
 
 - **Image Analysis**: Automatically generates descriptions for images using OpenAI's API.
