@@ -1,10 +1,15 @@
 from elasticsearch import Elasticsearch, helpers
 import json
+from dotenv import load_dotenv
+import os
+
+# Load environment variables
+load_dotenv()
 
 # Config
-ES_HOST = "https://localhost:9200"
-ES_USERNAME = "elastic"
-ES_PASSWORD = "PI2YFhUS4ycPWNw8VdcX"
+ES_HOST = os.getenv("ES_HOST")
+ES_USERNAME = os.getenv("ES_USERNAME")
+ES_PASSWORD = os.getenv("ES_PASSWORD")
 INDEX_NAME = "imageindex"
 JSON_FILE = "responses.json"
 
