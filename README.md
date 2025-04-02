@@ -1,9 +1,40 @@
 # memoryLens
 
-Updating Code soon with new OPEN AI RESPONSE API format from Older CHAT.COMPLITIONS FORMAT. Older version still works but there is no point uploading that now. 
+**memoryLens** is a project that leverages OpenAI's API and Elasticsearch to analyze and index image content for efficient searching and retrieval. The application processes images, generates descriptive responses using OpenAI's API, and stores the results in an Elasticsearch index.
 
-Ref- https://community.openai.com/t/introducing-the-responses-api/1140929
+## Features
 
-New code should be up in 48 hours.
+- **Image Analysis**: Automatically generates descriptions for images using OpenAI's API.
+- **Search Functionality**: Enables full-text search with Elasticsearch for indexed image descriptions.
+- **Bulk Indexing**: Supports bulk uploading of image data into Elasticsearch.
 
-Thanks!
+## Migration to OpenAI Responses API
+
+The project has been updated to use the new OpenAI Responses API, replacing the older `ChatCompletion` format. This ensures compatibility with the latest OpenAI API standards.
+
+For more details on the Responses API, refer to the [OpenAI documentation](https://community.openai.com/t/introducing-the-responses-api/1140929).
+
+## Setup Instructions
+
+1. Clone the repository.
+2. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Configure the `.env` file with your OpenAI API key and other necessary credentials.
+4. Run the indexing script to process images and populate the Elasticsearch index:
+   ```bash
+   python indexing.py
+   ```
+5. Use the search script to query the indexed data:
+   ```bash
+   python searching.py
+   ```
+
+## Upcoming Features
+
+- Enhanced error handling for API requests.
+- Support for additional image formats.
+- Improved search ranking and filtering options.
+
+Thank you for using memoryLens!
