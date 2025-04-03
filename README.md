@@ -37,6 +37,7 @@ For more details on the Responses API, refer to the [OpenAI documentation](https
 
 ## Upcoming Features
 
+- Implementing directory screenshot to track changes
 - Enhanced error handling for API requests.
 - Support for additional image formats.
 - Improved search ranking and filtering options.
