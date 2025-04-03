@@ -18,6 +18,8 @@ For more details on the Responses API, refer to the [OpenAI documentation](https
 
 ## Setup Instructions
 
+> ⚠️ **Note:** This application **requires Elasticsearch to be installed and running** on your system. Make sure to have it set up before running the indexing or search scripts.
+
 1. Clone the repository.
 2. Install the required dependencies:
    ```bash
