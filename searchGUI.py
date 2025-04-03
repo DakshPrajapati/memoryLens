@@ -32,7 +32,7 @@ app.title("🖼️ MemoryLens — Image Search")
 # Title
 title_label = ctk.CTkLabel(
     app,
-    text="Search 🔎",
+    text="Search for memories 🔎",
     font=ctk.CTkFont(size=22, weight="bold")
 )
 title_label.pack(pady=20)
